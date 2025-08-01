@@ -1,10 +1,16 @@
-const page = () => {
+import { json } from "zod";
+
+import {caller} from "@/trpc/server" // Update the import path as needed
+
+const page = async () => {
+  const data  = await caller.createAI({text: 'world'});
+
+  //"localhost:3000/api/createAI"
   return (
     <div>
-      <h1>Welcome to the App Page</h1>
-      <p>This is the main content of the app page.</p>
+      {JSON.stringify(data)}
     </div>
   );
-
 }
- export default page;
+
+export default page;
