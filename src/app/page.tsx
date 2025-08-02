@@ -1,16 +1,23 @@
-import { json } from "zod";
+"use client";
+import {toast} from"sonner";
+import { useMutation } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
 
-import {caller} from "@/trpc/server" // Update the import path as needed
+const Page = () => {
+  const trpc = useTRPC();
+  const invoke = useMutation(trpc.invoke.mutationOptions({
+    onSuccess: () => {
+      toast.success("Background job started successfully!");
+    },
+  }));
 
-const page = async () => {
-  const data  = await caller.createAI({text: 'world'});
-
-  //"localhost:3000/api/createAI"
   return (
-    <div>
-      {JSON.stringify(data)}
+    <div className="p-4 max-w-7xl mx-auto caret-amber-100">
+      <button disabled={invoke.isPending}  onClick={() => invoke.mutate({ text: "subhransu" })}>
+        invoke background Job
+      </button>
     </div>
   );
-}
+};
 
-export default page;
+export default Page;
